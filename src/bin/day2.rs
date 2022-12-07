@@ -3,16 +3,21 @@ use std::convert::Into;
 fn main() {
     let input = include_str!("../../inputs/input2.txt");
 
-    let rounds: Vec<Vec<Move>> = input.clone().lines().map(|line| {
-        line.split(' ').map(Into::into).collect()
-    }).collect();
+    let rounds: Vec<Vec<Move>> = input
+        .clone()
+        .lines()
+        .map(|line| line.split(' ').map(Into::into).collect())
+        .collect();
 
     println!("Day2 Part1: {}", part1(&rounds));
 
-    let rounds2: Vec<(Move, Outcome)> = input.lines().map(|line| {
-        let mut iter = line.splitn(2, ' ');
-        (iter.next().unwrap().into(), iter.next().unwrap().into())
-    }).collect();
+    let rounds2: Vec<(Move, Outcome)> = input
+        .lines()
+        .map(|line| {
+            let mut iter = line.splitn(2, ' ');
+            (iter.next().unwrap().into(), iter.next().unwrap().into())
+        })
+        .collect();
     println!("Day2 Part2: {}", part2(&rounds2));
 }
 
@@ -20,7 +25,7 @@ fn main() {
 enum Outcome {
     Lose,
     Draw,
-    Win
+    Win,
 }
 
 impl From<&str> for Outcome {
@@ -29,7 +34,9 @@ impl From<&str> for Outcome {
             "X" => Self::Lose,
             "Y" => Self::Draw,
             "Z" => Self::Win,
-            _ => {panic!("Unsupported outcome");}
+            _ => {
+                panic!("Unsupported outcome");
+            }
         }
     }
 }
@@ -48,7 +55,7 @@ impl From<Outcome> for i32 {
 enum Move {
     Rock,
     Paper,
-    Scissor
+    Scissor,
 }
 
 impl From<&str> for Move {
@@ -57,7 +64,9 @@ impl From<&str> for Move {
             "A" | "X" => Self::Rock,
             "B" | "Y" => Self::Paper,
             "C" | "Z" => Self::Scissor,
-            _ => {panic!("Unsupported move");}
+            _ => {
+                panic!("Unsupported move");
+            }
         }
     }
 }
@@ -85,7 +94,9 @@ impl Move {
                 (Move::Scissor, Move::Rock) => 0,
                 (Move::Paper, Move::Rock) => 6,
                 (Move::Paper, Move::Scissor) => 0,
-                _ => { panic!("Unreachable!");}
+                _ => {
+                    panic!("Unreachable!");
+                }
             }
         };
 
@@ -104,7 +115,9 @@ impl Move {
                 (Move::Scissor, Outcome::Win) => Move::Rock.into(),
                 (Move::Paper, Outcome::Lose) => Move::Rock.into(),
                 (Move::Paper, Outcome::Win) => Move::Scissor.into(),
-                _ => { panic!("Unreachable!");}
+                _ => {
+                    panic!("Unreachable!");
+                }
             }
         };
 
@@ -127,33 +140,35 @@ mod test {
     const INPUT: &str = "A Y
 B X
 C Z";
-    
+
     #[test]
     fn test_part1() {
-        let rounds: Vec<Vec<Move>> = INPUT.lines().map(|line| {
-            line.split(' ').map(Into::into).collect()
-        }).collect();
+        let rounds: Vec<Vec<Move>> = INPUT
+            .lines()
+            .map(|line| line.split(' ').map(Into::into).collect())
+            .collect();
 
         assert_eq!(rounds[0][1].play(rounds[0][0]), 8);
         assert_eq!(rounds[1][1].play(rounds[1][0]), 1);
         assert_eq!(rounds[2][1].play(rounds[2][0]), 6);
 
         assert_eq!(part1(&rounds), 15);
-
     }
 
     #[test]
     fn test_part2() {
-        let rounds: Vec<(Move, Outcome)> = INPUT.lines().map(|line| {
-            let mut iter = line.splitn(2, ' ');
-            (iter.next().unwrap().into(), iter.next().unwrap().into())
-        }).collect();
+        let rounds: Vec<(Move, Outcome)> = INPUT
+            .lines()
+            .map(|line| {
+                let mut iter = line.splitn(2, ' ');
+                (iter.next().unwrap().into(), iter.next().unwrap().into())
+            })
+            .collect();
 
         assert_eq!(rounds[0].0.guess(rounds[0].1), 4);
         assert_eq!(rounds[1].0.guess(rounds[1].1), 1);
-        assert_eq!(rounds[2].0.guess(rounds[2].1),7);
+        assert_eq!(rounds[2].0.guess(rounds[2].1), 7);
 
         assert_eq!(part2(&rounds), 12);
-
-   }
+    }
 }

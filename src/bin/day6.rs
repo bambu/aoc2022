@@ -11,25 +11,22 @@ fn main() {
 fn find_uniq_offset(stream: &str, min_unique: usize) -> usize {
     let data = stream.chars().collect::<Vec<char>>();
     let mut start = 0;
-    for (i, window) in data.windows(min_unique).enumerate(){
+    for (i, window) in data.windows(min_unique).enumerate() {
         if window.iter().collect::<HashSet<&char>>().len() == min_unique {
             start = i + min_unique;
             break;
         }
     }
     start
-
 }
 
 fn part1(stream: &str) -> usize {
     find_uniq_offset(stream, 4)
 }
 
-fn part2(stream: &str) -> usize{
+fn part2(stream: &str) -> usize {
     find_uniq_offset(stream, 14)
 }
-
-
 
 #[cfg(test)]
 mod test {
